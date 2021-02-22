@@ -1,7 +1,7 @@
 # mongocxx-tutorial
 Repository corresponding to [tutorial video](https://youtu.be/yPoH5cBJzkk)
 
-## Technoligies needed
+## Technologies needed
 - [A Linux OS Distribution](https://en.wikipedia.org/wiki/List_of_Linux_distributions)
 - [VS Code](https://code.visualstudio.com/)
 - [VS Code Easy C++ Projects](https://marketplace.visualstudio.com/items?itemName=ACharLuk.easy-cpp-projects)
