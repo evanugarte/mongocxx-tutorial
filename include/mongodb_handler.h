@@ -4,13 +4,15 @@
 #include <string>
 #include <iostream>
 
+#include "SimpleJSON/json.hpp"
 #include "bsoncxx/builder/stream/document.hpp"
 #include "bsoncxx/json.hpp"
 #include "bsoncxx/oid.hpp"
-#include "character_size.h"
 #include "mongocxx/client.hpp"
 #include "mongocxx/database.hpp"
 #include "mongocxx/uri.hpp"
+
+#include "character_size.h"
 
 namespace learning {
 constexpr char kMongoDbUri[] = "mongodb://0.0.0.0:27017";
@@ -79,6 +81,19 @@ class MongoDbHandler {
       return maybe_result->deleted_count() == 1;
     }
     return false;
+  }
+
+  json::JSON GetAllDocuments() {
+    mongocxx::collection collection = db[kCollectionName];
+    mongocxx::cursor cursor = collection.find({});
+    json::JSON result;
+    result["characters"] = json::Array();
+    if (cursor.begin() != cursor.end()) {
+      for (auto doc : cursor) {
+        result["characters"].append(bsoncxx::to_json(doc));
+      }
+    }
+    return result;
   }
 
  private:
