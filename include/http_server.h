@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <string>
-#include <unordered_map>
 
 #include "SimpleJSON/json.hpp"
 #include "mongocxx/instance.hpp"
