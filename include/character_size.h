@@ -17,7 +17,6 @@ std::unordered_map<CharacterSize, const char*> character_size_to_string({
     {CharacterSize::kLarge, "large"},
 });
 
-
 std::unordered_map<std::string, CharacterSize> string_to_character_size({
     {"small", CharacterSize::kSmall},
     {"medium", CharacterSize::kMedium},
