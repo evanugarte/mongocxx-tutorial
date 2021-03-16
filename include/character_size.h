@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ostream>
+#include <string>
 #include <unordered_map>
 
 namespace learning {
@@ -17,7 +18,7 @@ std::unordered_map<CharacterSize, const char*> character_size_to_string({
 });
 
 
-std::unordered_map<const char*, CharacterSize> string_to_character_size({
+std::unordered_map<std::string, CharacterSize> string_to_character_size({
     {"small", CharacterSize::kSmall},
     {"medium", CharacterSize::kMedium},
     {"large", CharacterSize::kLarge},

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 #include <unordered_map>
 
 #include "SimpleJSON/json.hpp"
@@ -25,8 +26,7 @@ class HttpServer {
   auto SaveCharacterToMongoDb() {
     return [&](served::response &response, const served::request &request) {
       json::JSON request_body = json::JSON::Load(request.body());
-
-      const char* size = request_body["size"].ToString().c_str();
+      std::string size = request_body["size"].ToString();
       auto maybe_size = string_to_character_size.find(size);
 
       if (maybe_size == string_to_character_size.end()) {
@@ -34,9 +34,9 @@ class HttpServer {
       }
 
       MongoDbHandler mhandler;
-      bool insert_successful =
-          mhandler.AddCharacterToDb(request_body["characterName"].ToString(),
-                                    maybe_size->second, request_body["wins"].ToInt());
+      bool insert_successful = mhandler.AddCharacterToDb(
+          request_body["characterName"].ToString(), maybe_size->second,
+          request_body["wins"].ToInt());
       insert_successful ? served::response::stock_reply(200, response)
                         : served::response::stock_reply(400, response);
     };
