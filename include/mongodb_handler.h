@@ -20,11 +20,18 @@ constexpr char kDatabaseName[] = "learning_mongocxx";
 constexpr char kCollectionName[] = "MarioKartCharacters";
 
 class MongoDbHandler {
- public:
+public:
   MongoDbHandler()
       : uri(mongocxx::uri(kMongoDbUri)),
         client(mongocxx::client(uri)),
-        db(client[kDatabaseName]) {}
+        db(client[kDatabaseName]) {
+    auto builder = bsoncxx::builder::stream::document{};
+    bsoncxx::v_noabi::document::value doc_value =
+        builder << "characterName" << 1 << bsoncxx::builder::stream::finalize;
+    mongocxx::options::index index_options{};
+    index_options.unique(true);
+    db[kCollectionName].create_index(doc_value.view(), index_options);
+  }
   // Mario Kart Characters
   bool AddCharacterToDb(const std::string &character_name,
                         const CharacterSize &size, const int16_t &wins) {
