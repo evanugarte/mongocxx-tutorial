@@ -23,4 +23,4 @@ $(BIN)/$(EXECUTABLE): $(SRC)
 	$(CXX) $(CXX_FLAGS) $(INCLUDE) -L$(LIB) $^ -o $@ $(LIBRARIES)
 
 clean:
-	-rm $(BIN)/*
+	-rm $(BIN)/$(EXECUTABLE)

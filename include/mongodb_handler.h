@@ -24,7 +24,14 @@ class MongoDbHandler {
   MongoDbHandler()
       : uri(mongocxx::uri(kMongoDbUri)),
         client(mongocxx::client(uri)),
-        db(client[kDatabaseName]) {}
+        db(client[kDatabaseName]) {
+    auto builder = bsoncxx::builder::stream::document{};
+    bsoncxx::v_noabi::document::value doc_value =
+        builder << "characterName" << 1 << bsoncxx::builder::stream::finalize;
+    mongocxx::options::index index_options{};
+    index_options.unique(true);
+    db[kCollectionName].create_index(doc_value.view(), index_options);
+  }
   // Mario Kart Characters
   bool AddCharacterToDb(const std::string &character_name,
                         const CharacterSize &size, const int16_t &wins) {
@@ -32,17 +39,19 @@ class MongoDbHandler {
     auto builder = bsoncxx::builder::stream::document{};
 
     bsoncxx::v_noabi::document::value doc_value =
-        builder << "characterName" << character_name
-                << "size" << character_size_to_string.find(size)->second
-                << "wins" << wins << bsoncxx::builder::stream::finalize;
-
-    bsoncxx::stdx::optional<mongocxx::result::insert_one> maybe_result =
-        collection.insert_one(doc_value.view());
-    // optional, can just return true by default
-    if(maybe_result) {
-      return maybe_result->inserted_id().get_oid().value.to_string().size() != 0;
+        builder << "characterName" << character_name << "size"
+                << character_size_to_string.find(size)->second << "wins" << wins
+                << bsoncxx::builder::stream::finalize;
+    try {
+      bsoncxx::stdx::optional<mongocxx::result::insert_one> maybe_result =
+          collection.insert_one(doc_value.view());
+      if (maybe_result) {
+        return maybe_result->inserted_id()
+          .get_oid().value.to_string().size() != 0;
+      }
+    } catch (const std::exception &e) {
+      return false;
     }
-    return false;
   }
 
   bool UpdateWins(const std::string &character_id) {
