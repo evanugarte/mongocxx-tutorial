@@ -16,5 +16,5 @@ Repository corresponding to [tutorial video](https://youtu.be/yPoH5cBJzkk)
 - [Setup server script](https://github.com/evanugarte/mongocxx-tutorial/blob/51a5fd3b112cd97f8c3a77c59b3582b0f635ed63/setup-server)
 - All files from video 1
 
-### For [Video 3](https://youtu.be/NC7IGLm69Ts)
+### For [Video 3](https://youtu.be/fd-p8dgEWAI)
 - See [#7](https://github.com/evanugarte/mongocxx-tutorial/pull/7)
